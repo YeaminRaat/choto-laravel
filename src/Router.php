@@ -6,9 +6,9 @@ class Router
 {
     protected array $routes = [];
 
-    public function get($url, $callback)
+    public function get($url, $action)
     {
-        $this->routes[$url] = $callback;
+        $this->routes[$url] = $action;
     }
 
     public function dispatch()

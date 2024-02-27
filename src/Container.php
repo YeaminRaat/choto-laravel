@@ -32,13 +32,16 @@ class Container
 
     public function resolve($abstract, $parameters = [])
     {
+        $concrete = $abstract;
         if (array_key_exists($abstract, $this->bindings)) {
-            $abstract = $this->bindings[$abstract]['concrete'];
+//            $concrete = $abstract;
+            $concrete = $this->bindings[$abstract]['concrete'];
         }
 
 
+
         $p = [];
-        $reflection = new \ReflectionClass($abstract);
+        $reflection = new \ReflectionClass($concrete);
         if ($dependency = $reflection->getConstructor()) {
             $p = $this->dependency($dependency->getParameters());
         }
@@ -71,5 +74,13 @@ class Container
     public function make($abstract, array $parameters = [])
     {
         return $this->resolve($abstract, $parameters);
+    }
+
+    public function get($abstract = null)
+    {
+        if (is_null($abstract)) {
+            return $this->instances;
+        }
+        return $this->instances[$abstract];
     }
 }
